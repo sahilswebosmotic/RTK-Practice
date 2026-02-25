@@ -69,9 +69,9 @@ const Header = ({
                     </button>
 
                     <button
-                    style={{ ...buttonStyle, backgroundColor: getButtonColor("deletepost") }}
+                        style={{ ...buttonStyle, backgroundColor: getButtonColor("deletePost") }}
                         onClick={handleDeletePost}>
-                            Delete Post (RTK Query)
+                        Delete Post (RTK Query)
                     </button>
                 </div>
             </nav>

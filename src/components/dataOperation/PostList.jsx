@@ -8,28 +8,27 @@ export function PostsList({
   titleStyle,
   textStyle
 }) {
-  const { data: posts, isLoading, isSuccess, isError, error } = useGetPostsQuery();
-
+  const { data: posts = [], isLoading, isSuccess, isError, error } = useGetPostsQuery();
   let content;
   if (isLoading) {
     content = <span>Loading...</span>;
   } else if (isSuccess) {
     content = (
-      <ul>
+      <div>
         {posts.map((post) => (
           <div key={post.id} style={cardStyle}>
                   <div style={containerStyle}>
-                    <h1 style = {titleStyle}>{post.name}</h1>
                     <h2 style={titleStyle}>{post.title}</h2>
-                    <h6 style={textStyle}>Post ID: {post.postId}</h6>
+                    <h6 style={textStyle}>Post ID: {post.id}</h6>
+                    <h6 style={textStyle}>User ID: {post.userId}</h6>
                     <p style={textStyle}>{post.body}</p>
                   </div>
                 </div>
         ))}
-      </ul>
+      </div>
     );
   } else if (isError) {
-    content = <div>Error: {error.message}</div>;
+    content = <div>Error: {error?.message || 'Failed to fetch posts'}</div>;
   }
 
   return <div className="posts-list">{content}</div>;

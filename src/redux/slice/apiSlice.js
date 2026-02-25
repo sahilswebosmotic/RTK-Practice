@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const apiSlice = createApi({
-  reducerPath: 'api', 
+  reducerPath: 'api',
 
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://jsonplaceholder.typicode.com' }), 
-
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://jsonplaceholder.typicode.com' }),
+  tagTypes: ['Post'],
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: () => '/posts', 
+      query: () => '/posts',
     }),
     addPost: builder.mutation({
       query: (body) => ({
@@ -16,25 +16,30 @@ export const apiSlice = createApi({
         body,
       }),
     }),
-    getUpdatePost :builder.query({
-      query:()=>`/posts/1`,
-    })
-    ,
-      updatePost: builder.mutation({
-      query: (body) => ({
-        url: `/posts/1`,
+    getUpdatePost: builder.query({
+      query: (id = 1) => `/posts/${id}`,
+    }),
+    updatePost: builder.mutation({
+      query: ({ id = 1, ...body }) => ({
+        url: `/posts/${id}`,
         method: 'PUT',
         body,
       }),
     }),
-    deletePost : builder.mutation({
-      query:(id) =>({
-        url:`/posts/${id}`,
-        method:'DELETE',
-      })
-    })
+    deletePost: builder.mutation({
+      query: (id) => ({
+        url: `/posts/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useAddPostMutation,useUpdatePostMutation,useDeletePostMutation,useGetUpdatePostQuery } = apiSlice;
+export const {
+  useGetPostsQuery,
+  useAddPostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useGetUpdatePostQuery,
+} = apiSlice;
 

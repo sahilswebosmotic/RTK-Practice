@@ -11,11 +11,17 @@ const AddPost = () => {
   const handleSubmit = async () => {
     if (!title || !body) return alert('Fill fields')
 
-    await createPost({
-      title,
-      body,
-      userId: 1,
-    })
+    try {
+      await createPost({
+        title,
+        body,
+        userId: 1,
+      }).unwrap()
+      setTitle('')
+      setBody('')
+    } catch {
+      // Error state is already exposed by RTK Query.
+    }
   }
   const pageStyle = {
     marginTop:"10vh",

@@ -1,18 +1,24 @@
 
 
-import React from "react";
+import React, { useState } from "react";
 import {
     useGetPostsQuery,
     useDeletePostMutation,
 } from "../../redux/slice/apiSlice";
 
 export default function DeletePost() {
-    const { data: posts, isLoading } = useGetPostsQuery();
+    const { data: posts = [], isLoading, isError } = useGetPostsQuery();
     const [deletePost, { isLoading: isDeleting }] =
         useDeletePostMutation();
+    const [deletingId, setDeletingId] = useState(null);
 
     const handleDelete = async (id) => {
-        await deletePost(id);
+        try {
+            setDeletingId(id);
+            await deletePost(id);
+        } finally {
+            setDeletingId(null);
+        }
     };
 
     const pageStyle = {
@@ -55,6 +61,7 @@ export default function DeletePost() {
     };
 
     if (isLoading) return <div style={pageStyle}>Loading posts...</div>;
+    if (isError) return <div style={pageStyle}>Failed to load posts.</div>;
 
     return (
         <div style={pageStyle}>
@@ -67,12 +74,12 @@ export default function DeletePost() {
                     <button
                         style={{
                             ...buttonStyle,
-                            opacity: isDeleting ? 0.6 : 1,
+                            opacity: isDeleting && deletingId === post.id ? 0.6 : 1,
                         }}
                         onClick={() => handleDelete(post.id)}
-                        disabled={isDeleting}
+                        disabled={isDeleting && deletingId === post.id}
                     >
-                        {isDeleting ? "Deleting..." : "Delete"}
+                        {isDeleting && deletingId === post.id ? "Deleting..." : "Delete"}
                     </button>
                 </div>
             ))}

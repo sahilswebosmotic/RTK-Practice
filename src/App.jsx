@@ -11,11 +11,11 @@ import Todo from "./components/dataSection/Todo";
 import Post from "./components/dataSection/Post";
 import Albums from "./components/dataSection/Albums";
 import Photos from "./components/dataSection/Photos";
-import User from "./components/dataSection/user";
+import User from "./components/dataSection/User";
 import { PostsList }  from "./components/dataOperation/PostList";
 import AddPost from "./components/dataOperation/AddPost";
 import UpdatePost from "./components/dataOperation/UpdatePost";
-import DeletePost from "@components/dataOperation/DeletePost";
+import DeletePost from "./components/dataOperation/DeletePost";
 
 function App() {
   const dispatch = useDispatch();

@@ -5,8 +5,14 @@ import {
 } from "../../redux/slice/apiSlice";
 
 export default function UpdatePost() {
+    const [postId, setPostId] = useState(1);
+    const selectedPostId = Number(postId) || 1;
 
-    const { data: post, isLoading: isFetching } = useGetUpdatePostQuery();
+    const {
+        data: post,
+        isLoading: isFetching,
+        isError: isFetchError,
+    } = useGetUpdatePostQuery(selectedPostId);
 
     const [updatePost, { isLoading, isSuccess, error, data }] =
         useUpdatePostMutation();
@@ -31,10 +37,10 @@ export default function UpdatePost() {
         }
 
         await updatePost({
-            id: 1,
+            id: selectedPostId,
             title,
             body,
-            userId: post.userId,
+            userId: post?.userId ?? 1,
         });
     };
 
@@ -118,6 +124,14 @@ export default function UpdatePost() {
         <div style={pageStyle}>
             <div style={cardStyle}>
                 <h2 style={titleStyle}>Update Post</h2>
+                <input
+                    style={inputStyle}
+                    type="number"
+                    min="1"
+                    value={postId}
+                    onChange={(e) => setPostId(e.target.value)}
+                    placeholder="Post ID"
+                />
 
                 <input
                     style={inputStyle}
@@ -143,6 +157,9 @@ export default function UpdatePost() {
 
                 {error && (
                     <p style={{ ...messageStyle, color: "#dc2626" }}>Update failed</p>
+                )}
+                {isFetchError && (
+                    <p style={{ ...messageStyle, color: "#dc2626" }}>Failed to load post</p>
                 )}
 
                 {data && (
